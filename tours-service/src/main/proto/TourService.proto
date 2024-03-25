@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.example.tours";
+option java_outer_classname = "TourServiceProto";
+
+service TourService {
+    rpc CreateTour(CreateTourRequest) returns (CreateTourResponse);
+    rpc GetTour(GetTourRequest) returns (TourResponse);
+    rpc UpdateTour(UpdateTourRequest) returns (UpdateTourResponse);
+    rpc DeleteTour(DeleteTourRequest) returns (DeleteTourResponse);
+}
+
+message CreateTourRequest {
+    string tour_name = 1;
+    string description = 2;
+    repeated string highlights = 3;
+    string location = 4;
+}
+
+message CreateTourResponse {
+    string tour_id = 1;
+}
+
+message GetTourRequest {
+    string tour_id = 1;
+}
+
+message TourResponse {
+    string tour_name = 1;
+    string description = 2;
+    repeated string highlights = 3;
+    string location = 4;
+}
+
+message UpdateTourRequest {
+    string tour_id = 1;
+    string tour_name = 2;
+    string description = 3;
+    repeated string highlights = 4;
+}
+
+message UpdateTourResponse {}
+
+message DeleteTourRequest {
+    string tour_id = 1;
+}
+
+message DeleteTourResponse {}
