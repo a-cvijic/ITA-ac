@@ -24,6 +24,8 @@ jobs:
 
       - name: Build with Maven
         run: ./mvnw clean install -DskipTests -e
+        working-directory: ./tours-service
 
       - name: Test with Maven
         run: ./mvnw test
+        working-directory: ./tours-service
