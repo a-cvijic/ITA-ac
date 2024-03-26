@@ -38,6 +38,7 @@ message UpdateTourRequest {
     string tour_name = 2;
     string description = 3;
     repeated string highlights = 4;
+    string location = 5;
 }
 
 message UpdateTourResponse {}
