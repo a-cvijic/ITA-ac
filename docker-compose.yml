@@ -1,26 +1,46 @@
 version: '3.8'
+
 services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_DB: tour_service_db
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    volumes:
+      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
+    ports:
+      - "5432:5432"
+    networks:
+      - postgres-network
+
   tours-service:
     build: ./tours-service
     ports:
       - "8081:8080"
     environment:
-      - QUARKUS_DATASOURCE_JDBC_URL=jdbc:postgresql://db:5432/tour_service_db
-      - QUARKUS_DATASOURCE_USERNAME=admin
-      - QUARKUS_DATASOURCE_PASSWORD=admin
+      QUARKUS_DATASOURCE_JDBC_URL: jdbc:postgresql://db:5432/tour_service_db
+      QUARKUS_DATASOURCE_USERNAME: admin
+      QUARKUS_DATASOURCE_PASSWORD: admin
+    networks:
+      - postgres-network
+    depends_on:
+      - db
+
   attractions-service:
     build: ./attractions-service
     ports:
       - "8080:8080"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/tour_attractions_db
-      - SPRING_DATASOURCE_USERNAME=admin
-      - SPRING_DATASOURCE_PASSWORD=admin
-  db:
-    image: postgres
-    environment:
-      - POSTGRES_DB=tour_service_db
-      - POSTGRES_USER=admin
-      - POSTGRES_PASSWORD=admin
-    ports:
-      - "5432:5432"
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/tour_attractions_db
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: admin
+    networks:
+      - postgres-network
+    depends_on:
+      - db
+
+networks:
+  postgres-network:
+    name: postgres-network
+    driver: bridge
