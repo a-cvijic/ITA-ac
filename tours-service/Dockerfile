@@ -1,14 +1,16 @@
-# Use the official Quarkus runtime image as a base
-FROM adoptopenjdk:latest
+FROM eclipse-temurin:21-jdk
 
-# Set the working directory in the container
-WORKDIR /work/
+# Set the location of the deployments
+ENV DEPLOYMENTS_DIR=/deployments
 
-# Copy the package jar file into the container at /work
-COPY target/quarkus-app/*.jar /work/application.jar
+# Copy your JAR file to the container
+COPY target/quarkus-app /deployments/
 
-# Expose the port on which your service will run
+# Set the working directory to the deployments directory
+WORKDIR $DEPLOYMENTS_DIR
+
+# Run Quarkus runner JAR
+CMD ["java", "-jar", "quarkus-run.jar"]
+
+# Optionally, you can expose the port if your application needs external access
 EXPOSE 8080
-
-# Run the application
-CMD ["java", "-jar", "/work/application.jar"]
