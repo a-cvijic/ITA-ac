@@ -1,5 +1,5 @@
 # Use the official Quarkus runtime image as a base
-FROM quay.io/quarkus/quarkus-runtime-jvm:11
+FROM adoptopenjdk:latest
 
 # Set the working directory in the container
 WORKDIR /work/
